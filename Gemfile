@@ -14,8 +14,8 @@ group :test do
   gem 'coveralls', require: false
 end
 
-gem 'spree_core',     github: 'spree/spree'
-gem 'spree_backend',  github: 'spree/spree'
-gem 'spree_api',      github: 'spree/spree'
+gem 'spree_core',    '~> 2-0-stable'
+gem 'spree_backend', '~> 2-0-stable'
+gem 'spree_api',     '~> 2-0-stable'
 
 gemspec
