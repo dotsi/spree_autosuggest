@@ -19,11 +19,11 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  #spree_version = '~> 1.3'
+  spree_version = '~> 1.3'
   s.add_runtime_dependency 'spree_core', spree_version
-  s.add_runtime_dependency 'spree_frontend', spree_version
-  s.add_runtime_dependency 'spree_backend', spree_version
-  s.add_runtime_dependency 'spree_api', spree_version
+  #s.add_runtime_dependency 'spree_frontend', spree_version
+  #s.add_runtime_dependency 'spree_backend', spree_version
+  #s.add_runtime_dependency 'spree_api', spree_version
 
   s.add_development_dependency 'capybara', '~> 2.1'
   s.add_development_dependency 'factory_girl', '~> 4.2'
