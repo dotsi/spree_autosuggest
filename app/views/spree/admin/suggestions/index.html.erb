@@ -1,19 +1,19 @@
 <div class="toolbar" data-hook="toolbar">
-  <%= "#{Spree.t('auto_suggest.total')} #{@suggestions.total_count}" %>
+  <%= "#{t('auto_suggest.total')} #{@suggestions.total_count}" %>
 </div>
 
-<h1><%= Spree.t('auto_suggest.listing_suggestions') %></h1>
+<h1><%= t('auto_suggest.listing_suggestions') %></h1>
 
 <table class="index" id="listing_suggestions">
   <tr>
-    <th><%= Spree.t('auto_suggest.id') %></th>
-    <th><%= Spree.t('auto_suggest.keywords') %></th>
-    <th><%= Spree.t('auto_suggest.count') %></th>
-    <th><%= Spree.t('auto_suggest.items_found') %></th>
-    <th><%= Spree.t('auto_suggest.data') %></th>
-    <th><%= Spree.t('auto_suggest.created_at') %></th>
-    <th><%= Spree.t('auto_suggest.updated_at') %></th>
-    <th><%= Spree.t(:action) %></th>
+    <th><%= t('auto_suggest.id') %></th>
+    <th><%= t('auto_suggest.keywords') %></th>
+    <th><%= t('auto_suggest.count') %></th>
+    <th><%= t('auto_suggest.items_found') %></th>
+    <th><%= t('auto_suggest.data') %></th>
+    <th><%= t('auto_suggest.created_at') %></th>
+    <th><%= t('auto_suggest.updated_at') %></th>
+    <th><%= t(:action) %></th>
   </tr>
 
 <% @suggestions.each do |suggestion| %>
@@ -23,9 +23,9 @@
     <td><%= suggestion.count %></td>
     <td><%= suggestion.items_found %></td>
     <td><%= suggestion.data %></td>
-    <td><%= suggestion.created_at %></td>
-    <td><%= suggestion.updated_at %></td>
-    <td><%= link_to Spree.t(:destroy), admin_suggestion_path(suggestion), confirm: Spree.t(:are_you_sure_delete), method: :delete %></td>
+    <td><%= suggestion.created_at ? l(suggestion.created_at) : "" %></td>
+    <td><%= suggestion.updated_at ? l(suggestion.updated_at) : "" %></td>
+    <td><%= link_to t(:destroy), admin_suggestion_path(suggestion), confirm: t(:are_you_sure_delete), method: :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -34,14 +34,14 @@
 
 <% content_for :sidebar do %>
   <div class="box" data-hook="admin_suggestions_index_search">
-    <h3><%= Spree.t(:search) %></h3>
+    <h3><%= t(:search) %></h3>
     <%= search_form_for @search, url: admin_suggestions_path do |f| %>
       <p>
-        <%= Spree.t('auto_suggest.keywords') %>:<br />
+        <%= t('auto_suggest.keywords') %>:<br />
         <%= f.text_field :keywords_cont, size: 18 %>
       </p>
       <div data-hook="admin_suggestions_index_search_buttons">
-        <p><%= button Spree.t(:search) %></p>
+        <p><%= button t(:search) %></p>
       </div>
     <% end %>
   </div>

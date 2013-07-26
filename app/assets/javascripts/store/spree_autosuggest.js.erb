@@ -1,0 +1,31 @@
+//= require store/autosuggest
+//= require store/spree_core
+
+/*
+$ ->
+  suggestOn = "<%= Spree::Autosuggest::Config.field %>"
+
+  $("input[name=#{suggestOn}]:not(.ui-autocomplete-input)").on "focus", ->
+    new Autosuggest(this,
+      to_display: 10
+      delay: 100
+      strict_cache: <%= Spree::Autosuggest::Config[:search_backend].to_json %>
+      minLength: 1)
+*/
+/*
+(function($){
+
+	var suggestOn = "<%= Spree::Autosuggest::Config.field %>";
+
+	console.log($( "input[name="+ suggestOn + "]:not(.ui-autocomplete-input)" ).length);
+
+	$("input[name="+ suggestOn + "]:not(.ui-autocomplete-input)").autocomplete({
+	  source: "/suggestions",
+	  to_display: 10,
+	  delay: 100,
+	  strict_cache: <%= Spree::Autosuggest::Config[:search_backend].to_json %>,
+	  minLength: 1
+	});
+
+});
+*/
