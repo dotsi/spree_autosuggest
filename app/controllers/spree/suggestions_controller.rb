@@ -1,4 +1,5 @@
 class Spree::SuggestionsController < Spree::BaseController
+  ssl_allowed :index
   caches_action :index, cache_path: Proc.new {|c| c.request.url }
 
   def index
