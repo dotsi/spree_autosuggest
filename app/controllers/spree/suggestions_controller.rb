@@ -3,14 +3,19 @@ class Spree::SuggestionsController < Spree::BaseController
   caches_action :index, cache_path: Proc.new {|c| c.request.url }
 
   def index
+    require 'blurrily/client'
     if Spree::Autosuggest::Config[:search_backend]
       suggestions = Spree::Config.searcher_class.new(keywords: params['term']).retrieve_products.map(&:name)
       suggestions = Spree::Product.search(name_cont: params['term']).result(distinct: true).map(&:name) if suggestions.blank?
     else
-      suggestions =  Spree::Suggestion.find_by_fuzzy_keywords(params['term'],:limit => 4)   #Spree::Suggestion.relevant(params['term'])#.map(&:keywords)
+      sclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'suggestions')
+      suggestions = Spree::Suggestion.find(sclient.find(params['term'], 4)) #Spree::Suggestion.find_by_fuzzy_keywords(params['term'],:limit => 4)   #Spree::Suggestion.relevant(params['term'])#.map(&:keywords)
     end
-    products = Spree::Product.find_by_fuzzy_name(params['term'],:limit => 3) #Spree::Product.search(name_cont: params['term']).result(distinct: true).limit(5)
-    taxons = Spree::Taxon.find_by_fuzzy_name(params['term'],:limit => 3) 
+    
+    tclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'taxons')
+    pclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'products')
+    products = Spree::Product.find(pclient.find(params['term'], 3)) #Spree::Product.find_by_fuzzy_name(params['term'],:limit => 3) #Spree::Product.search(name_cont: params['term']).result(distinct: true).limit(5)
+    taxons = Spree::Taxon.find(tclient.find(params['term'], 4))#Spree::Taxon.find_by_fuzzy_name(params['term'],:limit => 3) 
 
     tarr = []
     for t in taxons
@@ -26,7 +31,7 @@ class Spree::SuggestionsController < Spree::BaseController
 
     parr = []
     for p in products
-      parr << { :label => p.name, :link => url_for(p), :image => (!p.images.empty? ? p.images.first.attachment.url(:mini) : ''), :detail => true }
+      parr << { :label => p.name, :link => url_for(p), :image => (!p.images.empty? ? p.images.first.attachment.url(:mini) : ''), :detail => true } if p.active?
     end
     suarr = []
     for sug in suggestions
