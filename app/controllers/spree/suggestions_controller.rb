@@ -12,13 +12,13 @@ class Spree::SuggestionsController < Spree::BaseController
     #  suggestions = Spree::Suggestion.find(sclient.find(params['term'], 4)) #Spree::Suggestion.#find_by_fuzzy_keywords(params['term'],:limit => 4)   #Spree::Suggestion.relevant(params['term'])#.map(#&:keywords)
     #end
     sclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'suggestions')
-    ids = sclient.find(params['keywords'], 5)
+    ids = sclient.find(params['term'], 5)
     suggestions = Spree::Suggestion.find(ids, :order => "field(id, #{ids.join(',')})")
     pclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'products') 
-    pids = pclient.find(params['keywords'], 6)       
+    pids = pclient.find(params['term'], 6)       
     products = Spree::Product.find(pids, :order => "field(id, #{pids.join(',')})")
     tclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'taxons')
-    tids = tclient.find(params['keywords'], 5)
+    tids = tclient.find(params['term'], 5)
     taxons = Spree::Taxon.find(tids, :order => "field(id, #{tids.join(',')})")
 
     #tclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'taxons')
