@@ -5,7 +5,7 @@ class Spree::Suggestion < ActiveRecord::Base
 
   scope :has_data, where(["data is not ?", nil])
 
-  fuzzily_searchable :keywords
+  #fuzzily_searchable :keywords
 
   def self.relevant(term)
     config = Spree::Autosuggest::Config
