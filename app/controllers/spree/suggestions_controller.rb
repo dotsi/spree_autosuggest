@@ -12,15 +12,23 @@ class Spree::SuggestionsController < Spree::BaseController
     #  suggestions = Spree::Suggestion.find(sclient.find(params['term'], 4)) #Spree::Suggestion.#find_by_fuzzy_keywords(params['term'],:limit => 4)   #Spree::Suggestion.relevant(params['term'])#.map(#&:keywords)
     #end
     sclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'suggestions')
-    ids = sclient.find(params['term'], 5)
-    suggestions = Spree::Suggestion.find(ids, :order => "field(id, #{ids.join(',')})")
+    ids = sclient.find(params['term'], 4)
+    suggestions = []
+    if ids != []
+      suggestions = Spree::Suggestion.where(:id => ids).order("field(id, #{ids.join(',')})") #Spree::Suggestion.find_all_by_id(ids, :order => "field(id, #{ids.join(',')})")
+    end
     pclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'products') 
-    pids = pclient.find(params['term'], 6)       
-    products = Spree::Product.find(pids, :order => "field(id, #{pids.join(',')})")
+    pids = pclient.find(params['term'], 4)   
+    products = []    
+    if pids != []
+      products = Spree::Product.where(:id => pids).order("field(id, #{pids.join(',')})") #Spree::Product.find_all_by_id(pids, :order => "field(id, #{pids.join(',')})")
+    end
     tclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'taxons')
-    tids = tclient.find(params['term'], 5)
-    taxons = Spree::Taxon.find(tids, :order => "field(id, #{tids.join(',')})")
-
+    tids = tclient.find(params['term'], 3)
+    taxons = []
+    if tids != []
+      taxons = Spree::Taxon.where(:id => tids).order("field(id, #{tids.join(',')})") #Spree::Taxon.find_all_by_id(tids, :order => "field(id, #{tids.join(',')})")
+    end
     #tclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'taxons')
     #pclient = Blurrily::Client.new(host: '127.0.0.1', port: 12021, db_name: 'products')
     #products = Spree::Product.find(pclient.find(params['term'], 3)) #Spree::Product.find_by_fuzzy_name(params[#'term'],:limit => 3) #Spree::Product.search(name_cont: params['term']).result(distinct: true).limit(5)

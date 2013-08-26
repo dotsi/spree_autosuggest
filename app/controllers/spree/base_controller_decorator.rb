@@ -5,7 +5,8 @@ Spree::BaseController.class_eval do
   def save_search
     keywords = @searcher.try :keywords
 
-    if @products.present? and keywords.present?
+    if @products.present? && keywords.present? && !request.env["HTTP_USER_AGENT"].match(/\(.*https?:\/\/.*\)/)
+      return if keywords.split(" ").size > 3
       query = Spree::Suggestion.find_or_initialize_by_keywords(keywords.downcase)
 
       query.items_found = (@searcher.sunspot && @searcher.sunspot.total ? @searcher.sunspot.total : @products.size)
